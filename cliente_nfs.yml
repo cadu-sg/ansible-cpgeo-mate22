@@ -4,11 +4,12 @@
   connection: local
   become: yes
   tasks:
-  - name: Instalar autofs
+  - name: Instalar autofs e nfs-common
     ansible.builtin.apt:
-      name: autofs
-      update_cache: yes
-      cache_valid_time: 3600
+      name: 
+      - autofs
+      - nfs-common
+      state: latest
 
   - name: Criar o diretório /cpgeo_database para ponto de montagem
     ansible.builtin.file:
