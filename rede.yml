@@ -4,63 +4,26 @@
   connection: local
   become: yes
   tasks:
-  - name: Instalar ifupdown
-    apt:
-      name: ifupdown
-      update_cache: yes
-      cache_valid_time: 3600
 
-  - name: Desativar network-manager
+  - name: Desativar NetworkManager
     ansible.builtin.systemd:
-      name: network-manager
-      enabled: no
-    ignore_errors: yes
-  - name: Desativar NetworkManager-dispatcher
-    ansible.builtin.systemd:
-      name: NetworkManager-dispatcher
+      name: NetworkManager
       enabled: no
   - name: Desativar NetworkManager-wait-online
     ansible.builtin.systemd:
       name: NetworkManager-wait-online
       enabled: no
-  - name: Desativar NetworkManager
+  - name: Desativar NetworkManager-dispatcher
     ansible.builtin.systemd:
-      name: NetworkManager
+      name: NetworkManager-dispatcher
       enabled: no
 
-  - name: Desativar networkd-dispatcher
-    ansible.builtin.systemd:
-      name: networkd-dispatcher
-      enabled: no
-  - name: Desativar systemd-networkd-wait-online
-    ansible.builtin.systemd:
-      name: systemd-networkd-wait-online
-      enabled: no
-  - name: Desativar systemd-networkd
+  - name: Copiar arquivo de configuração de rede para /etc/systemd/network/
+    ansible.builtin.copy:
+      src: templates/static.network.j2
+      dest: /etc/systemd/network/static.network
+
+  - name: Reiniciar systemd-networkd
     ansible.builtin.systemd:
       name: systemd-networkd
-      enabled: no
-  - name: Desativar systemd-networkd.socket
-    ansible.builtin.systemd:
-      name: systemd-networkd.socket
-      enabled: no
-
-  - name: Desativar systemd-resolved
-    ansible.builtin.systemd:
-      name: systemd-resolved
-      enabled: no
-
-  - name: Copiar arquivo de configuração /etc/resolv.conf
-    ansible.builtin.copy:
-      src: templates/resolv.conf
-      dest: /etc/resolv.conf
-
-  - name:
-    ansible.builtin.template:
-      src: templates/interfaces.j2
-      dest: /etc/network/interfaces
-
-  - name:
-    ansible.builtin.systemd:
-      name: networking
       state: restarted

@@ -8,6 +8,6 @@
       update_cache: yes
       cache_valid_time: 3600
 
-  - name: Atualizar pacotes instalados
+  - name: Atualizar pacotes instalados (aptitude full-upgrade)
     ansible.builtin.apt:
       upgrade: full
