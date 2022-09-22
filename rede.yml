@@ -23,7 +23,8 @@
       src: templates/static.network.j2
       dest: /etc/systemd/network/static.network
 
-  - name: Reiniciar systemd-networkd
+  - name: Ativar e reiniciar systemd-networkd
     ansible.builtin.systemd:
       name: systemd-networkd
+      enabled: yes
       state: restarted
