@@ -17,6 +17,7 @@
       name:
         - build-essential
         - curl
+        - gedit
         - gnumeric
         - htop
         - nscd
